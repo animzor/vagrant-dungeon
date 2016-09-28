@@ -8,9 +8,14 @@ import javax.swing.JFrame;
 
 public class Window extends JFrame {
 	
-	
+	private static Window thisInstance;
+	public static Window getInstance() {
+		if (thisInstance == null)
+			thisInstance = new Window();
+		return thisInstance;
+	}
 
-	public Window(){
+	private Window(){
 		super("GameEngine");
 		
 		setSize(640, 480);

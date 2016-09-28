@@ -13,5 +13,9 @@ public class GameObject {
 	public void addComponent(){
 		
 	}
+
+	public ArrayList<Component> getComponents() {
+		return components;
+	}
 	
 }

@@ -1,11 +1,11 @@
-import GameEngine.Renderer;
+import GameEngine.Engine;
 
 
 public class GameLauncher {
 
 	public static void main(String[] args) {
-		Renderer r = new Renderer();
-
+		Engine ge = Engine.getInstance();
+		ge.initiate();
 	}
 
 }

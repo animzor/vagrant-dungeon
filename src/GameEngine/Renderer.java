@@ -6,13 +6,24 @@ import java.util.ArrayList;
 public class Renderer {
 
 	private ArrayList<ImageComponent> images = new ArrayList<ImageComponent>();
-	Window win = new Window();
 	
-	public Renderer(){
+	private static Renderer thisInstance;
+	public static Renderer getInstance() {
+		if (thisInstance == null)
+			thisInstance = new Renderer();
+		return thisInstance;
+	}
+	
+	private Renderer(){
+		Window.getInstance();
 	}
 	
 	public void draw(){
-		Graphics2D winGraphics = (Graphics2D) win.getGraphics();
+		Graphics2D winGraphics = (Graphics2D) Window.getInstance().getGraphics();
+		
+		for(ImageComponent image : images){
+			winGraphics.drawImage(image.getImage(), image.getX(), image.getY(), null);
+		}
 	}
 	
 	public void addImageComponent(ImageComponent image){
