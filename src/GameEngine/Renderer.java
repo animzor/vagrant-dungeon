@@ -22,7 +22,7 @@ public class Renderer {
 		Graphics2D winGraphics = (Graphics2D) Window.getInstance().getGraphics();
 		
 		for(ImageComponent image : images){
-			winGraphics.drawImage(image.getImage(), image.getX(), image.getY(), null);
+			winGraphics.drawImage(image.getImage().getData(), image.getX(), image.getY(), null);
 		}
 	}
 	

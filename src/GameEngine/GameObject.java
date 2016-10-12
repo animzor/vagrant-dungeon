@@ -7,11 +7,11 @@ public class GameObject {
 	private ArrayList<Component> components;
 	
 	public GameObject(){
-		
+		components = new ArrayList<Component>();
 	}
 	
-	public void addComponent(){
-		
+	public void addComponent(Component comp){
+		components.add(comp);
 	}
 
 	public ArrayList<Component> getComponents() {

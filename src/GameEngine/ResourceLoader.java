@@ -5,18 +5,16 @@ import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-
-import javax.imageio.IIOException;
 import javax.imageio.ImageIO;
 import javax.sound.sampled.*;
 
 public class ResourceLoader {
 	
 	
-	private final String resourceFolder = "src/resources/";
+	private final String resourceFolder = "resources/";
 	
-	private Map<String, BufferedImage> images = new HashMap<String, BufferedImage>();
-	private Map<String, Clip> sounds = new HashMap<String, Clip>();
+	private Map<String, Resource<BufferedImage>> images = new HashMap<String, Resource<BufferedImage>>();
+	private Map<String, Resource<Clip>> sounds = new HashMap<String, Resource<Clip>>();
 	
 	private static ResourceLoader thisInstance;
 	public static ResourceLoader getInstance() {
@@ -28,31 +26,33 @@ public class ResourceLoader {
 	private ResourceLoader(){
 	}
 	
-	public BufferedImage getImage(String name) {
+	public Resource<BufferedImage> getImage(String name) {
 
-        BufferedImage image = images.get(name);
-        if(image != null){
-        	return image;
+        Resource<BufferedImage> resource = images.get(name);
+        if(resource != null){
+        	return resource;
         }
         try{
         	
         	File sourceimage = new File(resourceFolder + name);
-        	image = ImageIO.read(sourceimage);
-        	images.put(name, image);
+        	BufferedImage image = ImageIO.read(sourceimage);
+        	resource = new Resource<BufferedImage>(image, name);
+        	images.put(name, resource);
+        	return resource;
         	
         } catch(IOException e){
         	System.out.println("Could not find image " + name + ": " + e.getMessage());
         }
 
-        return image;
+        return null;
 
     }
 	
-	public Clip getSound(String name) {
+	public Resource<Clip> getSound(String name) {
 		
-		Clip sound = sounds.get(name);
-		if(sound != null){
-        	return sound;
+		Resource<Clip> resource = sounds.get(name);
+		if(resource != null){
+        	return resource;
         }
 		
 		File file = new File(resourceFolder + name);
@@ -71,21 +71,23 @@ public class ResourceLoader {
 		DataLine.Info info = new DataLine.Info(Clip.class, format);
 		
 		try {
-			sound = (Clip) AudioSystem.getLine(info);
+			Clip sound = (Clip) AudioSystem.getLine(info);
+			resource = new Resource<Clip>(sound, name);
+			return resource;
 		} catch (LineUnavailableException e) {
 			e.printStackTrace();
 		}
 		
-		return sound;
+		return null;
 		
 	}
 	
 	//load an array of images
-	public BufferedImage[] getImages(String[] imageNames) {
-		BufferedImage[] imageArray = new BufferedImage[imageNames.length];
-		for (int i = 0; i < imageNames.length; i++) {
-			imageArray[i] = getImage(imageNames[i]);
-		}
-		return imageArray;
-	}
+//	public Resource<BufferedImage>[] getImages(String[] imageNames) {
+//		Resource<BufferedImage>[] imageArray = new Resource<BufferedImage>[imageNames.length];
+//		for (int i = 0; i < imageNames.length; i++) {
+//			imageArray[i] = getImage(imageNames[i]);
+//		}
+//		return imageArray;
+//	}
 }
